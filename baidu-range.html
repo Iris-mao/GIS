@@ -4,7 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>获取地区轮廓线</title>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EDd02aa85d6e9a5d199e9fd2ae386543"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=EDd02aa85d6e9a5d199e9fd2ae386543"></script>
     <style type="text/css">
         body {
             font-size: 13px;
@@ -17,25 +18,32 @@
             border: 1px solid gray
         }
 
-        .anchorBL{display:none;}
+        .chart_container {
+            /*width: 200px;*/
+            /*height: 200px;*/
+            border: 1px solid gray
+        }
+
+        .anchorBL {
+            display: none;
+        }  /*去除左下角百度地图logo的样式*/
     </style>
 </head>
 <body>
-<div id="container"></div>
-<!--<br />-->
+<div id="container" style="display: inline-block"></div>
+<p class="chart_container" style="display: inline-block;">点击标记点显示的信息</p>
+<br/>
 <!--输入省、直辖市或县名称：<input type="text" id="districtName" style="width:80px" value="重庆市">-->
 <input type="button" onclick="getBoundary()" value="获取苏州市的轮廓线">
 <input type="button" onclick="getBoundary1()" value="凸显苏州市，其他地方隐藏">
 
 <script type="text/javascript">
     var map = new BMap.Map("container");
-    map.centerAndZoom(new BMap.Point(120.583289,31.309502), 9);   //初始化地图，设置中心点和范围级别
-    var marker = new BMap.Marker(new BMap.Point(120.583289,31.309502));  // 创建标注
+    map.centerAndZoom(new BMap.Point(120.583289, 31.309502), 9);   //初始化地图，设置中心点和范围级别
+    var marker = new BMap.Marker(new BMap.Point(120.583289, 31.309502));  // 创建标注
     map.addOverlay(marker);
-    var content = '<div>test</div>';
-    console.log(content);
-    addClickHandler(content, marker);
-//    map.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));   //将控件加入地图（缩放控件）
+    addClickHandler(marker);
+    //    map.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));   //将控件加入地图（缩放控件）
     map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
 
     function getBoundary() {
@@ -166,27 +174,16 @@
             map.setViewport(ply.getPath());    //调整视野
         });
     }
-    var opts = {
-        width: 460,     // 信息窗口宽度
-        height: 185,     // 信息窗口高度
-        title: "<b>企业详情</b>", // 信息窗口标题
-        enableMessage: false//设置允许信息窗发送短息
-    };
 
-    function addClickHandler(content, marker) {
+    function addClickHandler(marker) {
         marker.addEventListener("click", function (e) {
-                    openInfo(content, e)
+                    openInfo();
                 }
         );
     }
 
-    function openInfo(content, e) {
-        var p = e.target;
-        //console.log(p);
-        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-        // console.log(point);
-        var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
-        map.openInfoWindow(infoWindow, point); //开启信息窗口
+    function openInfo() {
+        document.getElementsByClassName('chart_container')[0].innerHTML="你点击了相应的标记，显示相应的标记信息";
     }
 </script>
 </body>
